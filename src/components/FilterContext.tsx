@@ -3,7 +3,7 @@ import{createContext , useContext, useState , ReactNode} from "react"
 interface FilterContextType{
     searchQuery: string,
     setSearchQuery : (query : string) => void,
-    seletCategory: string,
+    selectCategory: string,
     setSeletCategory: (category : string) => void,
     minPrice: number | undefined,
     setMinPrice : (price : number | undefined) => void,
@@ -17,7 +17,7 @@ const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
 export const FilterProvider: React.FC<{children: ReactNode}> = ({children,}) =>{
     const [searchQuery,setSearchQuery] = useState<string>("");
-    const [seletCategory,setSeletCategory] = useState<string>("");
+    const [selectCategory,setSeletCategory] = useState<string>("");
     const [minPrice,setMinPrice] = useState<number | undefined>(undefined);
     const [maxPrice,setMaxPrice] = useState<number | undefined>(undefined);
     const [keyword,setKeyword] = useState<string>("");
@@ -26,7 +26,7 @@ export const FilterProvider: React.FC<{children: ReactNode}> = ({children,}) =>{
         {
             searchQuery,
             setSearchQuery,
-            seletCategory,
+            selectCategory,
             setSeletCategory,
             minPrice,
             setMinPrice,

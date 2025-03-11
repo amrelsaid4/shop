@@ -13,7 +13,7 @@ const SideBar = ({}: Iprops) => {
 const {
   searchQuery,
             setSearchQuery,
-            seletCategory,
+            selectCategory,
             setSeletCategory,
             minPrice,
             setMinPrice,
@@ -115,7 +115,7 @@ setMinPrice(value ? parseFloat(value) : undefined);
                   value={category}
                   onChange={() => handleRadioChangeCategories(category)}
                   className="mr-2 w-[16px] h-[16px]"
-                  checked={seletCategory === category}
+                  checked={selectCategory === category}
                 />
                 {category.toUpperCase()}
               </label>
