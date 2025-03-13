@@ -1,20 +1,30 @@
-import {Route, BrowserRouter as Router, Routes} from "react-router-dom"
+import { Route, Routes } from "react-router-dom";
 import SideBar from "./components/SideBar";
 import MainContent from "./components/MainContent";
 import ProductPage from "./components/ProductPage";
-interface Iprops {}
-const App = ({}: Iprops) => {
-  return <Router>
-    <div className="flex h-screen">
-        <SideBar/>
-        <div className="routned w-full flex - justify-center flex-wrap">
-         <Routes>
-          <Route path="/" element={<MainContent />}/>
-          <Route path="/product/:id" element={<ProductPage />}/>
-         </Routes>
+import NotFound from "./components/NotFound";
+import Layout from "./components/Layout";
+import { FilterProvider } from "./components/FilterContext";
+import "./index.css";
+
+const App = () => {
+  console.log("App Component Loaded");
+  return (
+    <FilterProvider>
+      <div className="flex h-screen">
+        <SideBar />
+        <div className="w-full flex justify-center flex-wrap">
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<MainContent />} />
+              <Route path="product/:id" element={<ProductPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
         </div>
-    </div>
-  </Router>
+      </div>
+    </FilterProvider>
+  );
 };
 
 export default App;

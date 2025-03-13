@@ -1,29 +1,30 @@
 import { useEffect, useState } from "react";
 import { useFilter } from "./FilterContext";
 
-interface Iprops {}
-interface product {
+interface Product {
   category: string;
 }
+
 interface FetchResponse {
-  products: product[];
+  products: Product[];
 }
 
-const SideBar = ({}: Iprops) => {
-const {
-  searchQuery,
-            setSearchQuery,
-            selectCategory,
-            setSeletCategory,
-            minPrice,
-            setMinPrice,
-            maxPrice,
-            setMaxPrice,
-            keyword,
-            setKeyword
-} = useFilter();
+const SideBar = () => {
+  const {
+    searchQuery,
+    setSearchQuery,
+    selectCategory,
+    setSelectCategory,
+    minPrice,
+    setMinPrice,
+    maxPrice,
+    setMaxPrice,
+    keyword,
+    setKeyword,
+  } = useFilter();
 
   const [categories, setCategories] = useState<string[]>([]);
+  const [loading, setLoading] = useState(true);
   const [keyWords] = useState<string[]>([
     "apple",
     "watch",
@@ -38,75 +39,82 @@ const {
       try {
         const response = await fetch("https://dummyjson.com/products");
         const data: FetchResponse = await response.json();
-        console.log(data);
 
-        const uniqueCategories = Array.from(
-          new Set(data.products.map((product) => product.category))
-        );
+        const uniqueCategories = [
+          ...new Set(data.products.map((product) => product.category)),
+        ];
         setCategories(uniqueCategories);
       } catch (e) {
-        console.error("Error fetching product", e);
+        console.error("Error fetching categories", e);
+      } finally {
+        setLoading(false);
       }
     };
     fetchCategories();
   }, []);
 
-  const handleMInPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-const value = e.target.value;
-setMinPrice(value ? parseFloat(value) : undefined);
-  }
+  const handleMinPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setMinPrice(value ? parseFloat(value) : undefined);
+  };
+
   const handleMaxPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setMaxPrice(value ? parseFloat(value) : undefined);
-      }
-  const handleRadioChangeCategories = (category : string) => {
-    setSeletCategory(category);
-  }
+  };
+
+  const handleRadioChangeCategories = (category: string) => {
+    setSelectCategory(category);
+  };
+
   const handleKeywordClick = (keyWord: string) => {
-    setKeyword(keyWord)
-  }
+    setKeyword(keyWord);
+  };
+
   const handleResetFilters = () => {
     setSearchQuery("");
-    setSeletCategory("");
+    setSelectCategory("");
     setMinPrice(undefined);
     setMaxPrice(undefined);
     setKeyword("");
-  }
+  };
 
   return (
     <div className="w-64 p-5 h-screen">
-      <h1 className="text-2xl font-bold mb-10 mt-4">react</h1>
+      <h1 className="text-2xl font-bold mb-10 mt-4">React</h1>
+
       <section>
         <input
           type="text"
-          className="border-2 rounded px-2 sm:mb-0"
+          className="border-2 rounded px-2 py-3 w-full sm:mb-0"
           placeholder="Search Product"
           value={searchQuery}
-          onChange={e => setSearchQuery(e.target.value)}
+          onChange={(e) => setSearchQuery(e.target.value)}
         />
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center mt-3 items-center">
           <input
-            type="text"
+            type="number"
             className="border-2 mr-2 px-5 py-3 mb-3 w-full"
             placeholder="MIN"
             value={minPrice ?? ""}
-            onChange={handleMInPriceChange}
+            onChange={handleMinPriceChange}
           />
           <input
-            type="text"
-            className="border-2 mr-2 px-5 py-3 mb-3 w-full"
+            type="number"
+            className="border-2 px-5 py-3 mb-3 w-full"
             placeholder="MAX"
             value={maxPrice ?? ""}
             onChange={handleMaxPriceChange}
           />
         </div>
+      </section>
 
-        {/* section categories */}
-        <div className="mb-5">
-          <h2 className="text-xl font-semibold mb-3">Categories</h2>
-        </div>
+      <div className="mb-5">
+        <h2 className="text-xl font-semibold mb-3">Categories</h2>
         <section>
-          {categories.length > 0 ? (
+          {loading ? (
+            <p className="text-gray-500 italic">Loading categories...</p>
+          ) : categories.length > 0 ? (
             categories.map((category, index) => (
               <label key={index} className="block mb-2">
                 <input
@@ -121,26 +129,34 @@ setMinPrice(value ? parseFloat(value) : undefined);
               </label>
             ))
           ) : (
-            <p>Loading categories...</p>
+            <p className="text-red-500">No categories found.</p>
           )}
         </section>
-        {/* Keywords section */}
-        <div className="mb-5 mt-4">
-          <h2 className="text-xl font-semibold mb-3">Keywords</h2>
-          <div>
-            {keyWords.map((keyWord, index) => (
-              <button
-                key={index}
-                onClick={() => handleKeywordClick(keyWord)}
-                className="black mb-2 px-4 py-2 w-full border rounded hover:bg-gray-200"
-              >
-                {keyWord.toUpperCase()}
-              </button>
-            ))}
-          </div>
+      </div>
+
+      <div className="mb-5 mt-4">
+        <h2 className="text-xl font-semibold mb-3">Keywords</h2>
+        <div>
+          {keyWords.map((keyWord, index) => (
+            <button
+              key={index}
+              onClick={() => handleKeywordClick(keyWord)}
+              className={`mb-2 px-4 py-2 w-full border rounded hover:bg-gray-200 ${
+                keyword === keyWord ? "bg-gray-300 font-semibold" : ""
+              }`}
+            >
+              {keyWord.toUpperCase()}
+            </button>
+          ))}
         </div>
-       <button onClick={handleResetFilters} className="w-full mb-[4rem] py-2 bg-black text-white rounded mt-5">rester fuilter</button>
-      </section>
+      </div>
+
+      <button
+        onClick={handleResetFilters}
+        className="w-full mb-[4rem] py-2 bg-black text-white rounded mt-5"
+      >
+        Reset Filter
+      </button>
     </div>
   );
 };
