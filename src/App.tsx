@@ -5,22 +5,11 @@ import ProductPage from "./components/ProductPage";
 import NotFound from "./components/NotFound";
 import Layout from "./components/Layout";
 import { FilterProvider } from "./components/FilterContext";
-import "./index.css";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
 import store from "./redux/store";
-import { useEffect } from "react";
-import Cart from "./components/Cart";
-import { loadCart } from "./components/CartSlice";
+import "./index.css";
 
 const App = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    if (savedCart) {
-      dispatch(loadCart(JSON.parse(savedCart)));
-    }
-  }, [dispatch]);
   return (
     <Provider store={store}>
       <FilterProvider>
@@ -34,7 +23,6 @@ const App = () => {
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
-            <Cart />
           </div>
         </div>
       </FilterProvider>

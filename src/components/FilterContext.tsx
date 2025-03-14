@@ -15,7 +15,9 @@ interface FilterContextType {
 
 const FilterContext = createContext<FilterContextType | undefined>(undefined);
 
-export const FilterProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const FilterProvider: React.FC<{ children: ReactNode }> = ({
+  children,
+}) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [selectCategory, setSelectCategory] = useState<string>("");
   const [minPrice, setMinPrice] = useState<number | undefined>(undefined);

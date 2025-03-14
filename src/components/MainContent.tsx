@@ -3,6 +3,7 @@ import { useFilter } from "./FilterContext";
 import { ShoppingCart, Tally3 } from "lucide-react";
 import axios from "axios";
 import BookCard from "./BookCard";
+import Cart from "./Cart";
 
 interface Iprops {}
 const MainContent = ({}: Iprops) => {
@@ -13,8 +14,7 @@ const MainContent = ({}: Iprops) => {
   const [filter, setFilter] = useState("all");
   const [currentPage, setCurrentPage] = useState(1);
 
-const [cartItems, setCartItems] = useState<any[]>([]);
-const [cartOpen, setCartOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const itemsPerPage = 12;
 
@@ -99,117 +99,114 @@ const [cartOpen, setCartOpen] = useState(false);
 
   //   return buttons;
   // };
-  const handleIncreaseQuantity = (id: number) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-  
-  const handleDecreaseQuantity = (id: number) => {
-    setCartItems((prevItems) =>
-      prevItems
-        .map((item) =>
-          item.id === id
-            ? { ...item, quantity: item.quantity - 1 }
-            : item
-        )
-        .filter((item) => item.quantity > 0) 
-    );
-  };
-  
+  // const handleIncreaseQuantity = (id: number) => {
+  //   setCartItems((prevItems) =>
+  //     prevItems.map((item) =>
+  //       item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+  //     )
+  //   );
+  // };
+
+  // const handleDecreaseQuantity = (id: number) => {
+  //   setCartItems((prevItems) =>
+  //     prevItems
+  //       .map((item) =>
+  //         item.id === id
+  //           ? { ...item, quantity: item.quantity - 1 }
+  //           : item
+  //       )
+  //       .filter((item) => item.quantity > 0)
+  //   );
+  // };
+
   const filteredProducts = getFilteredProducts();
 
   return (
     <section className="xl:w-[55rem] mr-[10rem] sm:w-[40rem] xs:w-[20rem] p-5">
       <div className="mb-5">
-      <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <button
+              className="border px-4 py-2 rounded-full flex items-center"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <Tally3 className="mr-2" />
+              {filter === "all"
+                ? "Filter"
+                : filter.charAt(0).toUpperCase() + filter.slice(1)}
+            </button>
 
-  <div className="relative">
-    <button
-      className="border px-4 py-2 rounded-full flex items-center"
-      onClick={() => setDropdownOpen(!dropdownOpen)}
-    >
-      <Tally3 className="mr-2" />
-      {filter === "all" ? "Filter" : filter.charAt(0).toUpperCase() + filter.slice(1)}
-    </button>
-
-    {dropdownOpen && (
-               <div className="absolute bg-white border border-gray-300 rounded mt-2 w-full sm:w-40">
-                 <button
-                   className="block px-4 py-2 w-full text-left hover:bg-gray-200"
-                   onClick={() => setFilter("cheap")}
-                 >
-                   Cheap
-                 </button>
-                 <button
-                   className="block px-4 py-2 w-full text-left hover:bg-gray-200"
-                   onClick={() => setFilter("expensive")}
-                 >
-                   Expensive
-                 </button>
-                 <button
-                   className="block px-4 py-2 w-full text-left hover:bg-gray-200"
-                   onClick={() => setFilter("popular")}
-                 >
-                   Popular
-                 </button>
-               </div>
-             )}
-  </div>
-
-
-  <div className="relative py-5">
-    <button
-      className="border px-4 py-2 rounded-full flex items-center"
-      onClick={() => setCartOpen(!cartOpen)}
-    >
-      <ShoppingCart className="mr-2 " />
-      Cart ({cartItems.length})
-    </button>
-    {cartOpen && (
-  <div className="absolute bg-white border border-gray-300 rounded mt-2 p-4 w-64">
-    {cartItems.length === 0 ? (
-      <p className="text-center text-gray-500">Your cart is empty</p>
-    ) : (
-      <>
-        <ul>
-          {cartItems.map((item) => (
-            <li key={item.id} className="flex justify-between p-2 border-b">
-              <div>
-                <span>{item.title}</span>
-                <p>${item.price} x {item.quantity} = ${item.price * item.quantity}</p>
+            {dropdownOpen && (
+              <div className="absolute bg-white border border-gray-300 rounded mt-2 w-full sm:w-40">
+                <button
+                  className="block px-4 py-2 w-full text-left hover:bg-gray-200"
+                  onClick={() => setFilter("cheap")}
+                >
+                  Cheap
+                </button>
+                <button
+                  className="block px-4 py-2 w-full text-left hover:bg-gray-200"
+                  onClick={() => setFilter("expensive")}
+                >
+                  Expensive
+                </button>
+                <button
+                  className="block px-4 py-2 w-full text-left hover:bg-gray-200"
+                  onClick={() => setFilter("popular")}
+                >
+                  Popular
+                </button>
               </div>
-              <div className="flex items-center">
-                <button onClick={() => handleDecreaseQuantity(item.id)} className="px-2 border">-</button>
-                <span className="mx-2">{item.quantity}</span>
-                <button onClick={() => handleIncreaseQuantity(item.id)} className="px-2 border">+</button>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="text-center font-bold mt-2">
-          Total: ${cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0)}
-        </div>
-      </>
-    )}
-  </div>
-)}
+            )}
+          </div>
 
+          <div className="relative py-5">
+  <button
+    className="border px-4 py-2 rounded-full flex items-center shadow-lg hover:bg-gray-100 transition"
+    onClick={() => setCartOpen(true)}
+  >
+    <ShoppingCart className="mr-2" />
+    Cart
+  </button>
+
+  {cartOpen && (
+    <div
+      className="fixed inset-0 bg-black/60 backdrop-blur-md z-40"
+      onClick={() => setCartOpen(false)}
+    />
+  )}
+
+  <div
+    className={`fixed top-0 right-0 w-96 h-full bg-white shadow-xl border-l border-gray-300 transform transition-transform duration-300 ease-in-out z-50 flex flex-col
+    ${cartOpen ? "translate-x-0" : "translate-x-full"}`}
+  >
+    <div className="p-4 flex justify-between items-center border-b">
+      <h2 className="text-xl font-bold">Shopping Cart</h2>
+      <button
+        onClick={() => setCartOpen(false)}
+        className="text-red-500 hover:text-red-700"
+      >
+        ✖
+      </button>
+    </div>
+
+    <div className="overflow-y-auto flex-grow p-4">
+      <Cart />
+    </div>
   </div>
 </div>
 
+        </div>
+
         <div className="grid grid-cols-4 sm:grid-cols-3 md:grid-cols-4 gap-5">
           {filteredProducts.map((product) => (
-      <BookCard
-      key={product.id}
-      id={product.id}
-      title={product.title}
-      image={product.thumbnail}
-      price={product.price}
-      
-    />
+            <BookCard
+              key={product.id}
+              id={product.id}
+              title={product.title}
+              image={product.thumbnail}
+              price={product.price}
+            />
           ))}
         </div>
 
@@ -247,4 +244,4 @@ const [cartOpen, setCartOpen] = useState(false);
   );
 };
 
-export default MainContent; 
+export default MainContent;

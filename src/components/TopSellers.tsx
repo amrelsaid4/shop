@@ -43,7 +43,9 @@ const TopSellers = () => {
   const handleFollowClick = useCallback((id: string) => {
     setAuthors((prev) =>
       prev.map((author) =>
-        author.id === id ? { ...author, isFollowing: !author.isFollowing } : author
+        author.id === id
+          ? { ...author, isFollowing: !author.isFollowing }
+          : author
       )
     );
   }, []);
@@ -62,11 +64,14 @@ const TopSellers = () => {
 
       <ul>
         {authors.map((author) => (
-          <li key={author.id} className="flex items-center justify-between mb-4">
+          <li
+            key={author.id}
+            className="flex items-center justify-between mb-4"
+          >
             <section className="flex justify-center items-center">
               <img
                 src={author.image}
-                alt={`Profile of ${author.name}`} 
+                alt={`Profile of ${author.name}`}
                 className="w-[25%] h-[25%] rounded-full"
               />
               <span className="ml-4">{author.name}</span>
@@ -75,7 +80,9 @@ const TopSellers = () => {
             <button
               onClick={() => handleFollowClick(author.id)}
               className={`py-1 px-3 rounded ${
-                author.isFollowing ? "bg-red-500 text-white" : "bg-black text-white"
+                author.isFollowing
+                  ? "bg-red-500 text-white"
+                  : "bg-black text-white"
               }`}
             >
               {author.isFollowing ? "Unfollow" : "Follow"}

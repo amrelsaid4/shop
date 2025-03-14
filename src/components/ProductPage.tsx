@@ -44,7 +44,9 @@ const ProductPage = () => {
   if (!product) {
     return (
       <div className="flex items-center justify-center h-screen">
-        <h1 className="text-xl font-semibold text-red-500">Product not found!</h1>
+        <h1 className="text-xl font-semibold text-red-500">
+          Product not found!
+        </h1>
       </div>
     );
   }
@@ -73,8 +75,12 @@ const ProductPage = () => {
       <h1 className="text-2xl mb-4 font-bold">{product.title}</h1>
       <p className="mb-4 text-gray-700 w-[70%]">{product.description}</p>
       <div className="flex text-lg">
-        <p>Price: <span className="font-semibold">${product.price}</span></p>
-        <p className="ml-10">Rating: <span className="font-semibold">{product.rating}</span></p>
+        <p>
+          Price: <span className="font-semibold">${product.price}</span>
+        </p>
+        <p className="ml-10">
+          Rating: <span className="font-semibold">{product.rating}</span>
+        </p>
       </div>
     </div>
   );
