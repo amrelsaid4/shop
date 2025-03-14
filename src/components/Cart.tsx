@@ -1,8 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { increaseQuantity, decreaseQuantity, removeFromCart } from "./CartSlice";
+import React from "react";
 
-const Cart = () => {
+
+
+
+const Cart = React.memo(() => {
   const cart = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch();
 
@@ -36,6 +40,6 @@ const Cart = () => {
       <h3 className="text-lg font-bold">Total: ${totalPrice.toFixed(2)}</h3>
     </div>
   );
-};
+});
 
 export default Cart;
