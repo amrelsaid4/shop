@@ -13,8 +13,10 @@ const BookCard: React.FC<IProps> = ({ id, image, title, price }) => {
   const dispatch = useDispatch();
 
   const handleAddToCart = () => {
-    dispatch(addToCart({ id, title, image, price})); 
+    console.log("Attempting to dispatch:", {id , image , title , price}); // اطبع البيانات قبل الإرسال
+  dispatch(addToCart({id, image , title , price}));
   };
+  
 
   return (
     <div className="border p-4 rounded flex flex-col justify-between">

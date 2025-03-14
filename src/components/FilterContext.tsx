@@ -28,7 +28,7 @@ export const FilterProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         searchQuery,
         setSearchQuery,
         selectCategory,
-        setSelectCategory, // ✅ تصحيح التسمية هنا
+        setSelectCategory,
         minPrice,
         setMinPrice,
         maxPrice,

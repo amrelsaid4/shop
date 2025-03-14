@@ -62,11 +62,11 @@ const [cartOpen, setCartOpen] = useState(false);
 
     switch (filter) {
       case "cheap":
-        return filteredProducts.sort((x, y) => y.price - x.price);
+        return [...filteredProducts].sort((x, y) => x.price - y.price);
       case "expensive":
-        return filteredProducts.sort((x, y) => x.price - y.price);
+        return [...filteredProducts].sort((x, y) => y.price - x.price);
       case "popular":
-        return filteredProducts.sort((x, y) => y.rating - x.rating);
+        return [...filteredProducts].sort((x, y) => y.rating - x.rating);
       default:
         return filteredProducts;
     }
@@ -136,12 +136,27 @@ const [cartOpen, setCartOpen] = useState(false);
     </button>
 
     {dropdownOpen && (
-      <div className="absolute bg-white border border-gray-300 rounded mt-2 w-full sm:w-40">
-        <button className="block px-4 py-2 w-full text-left hover:bg-gray-200" onClick={() => setFilter("cheap")}>Cheap</button>
-        <button className="block px-4 py-2 w-full text-left hover:bg-gray-200" onClick={() => setFilter("expensive")}>Expensive</button>
-        <button className="block px-4 py-2 w-full text-left hover:bg-gray-200" onClick={() => setFilter("popular")}>Popular</button>
-      </div>
-    )}
+               <div className="absolute bg-white border border-gray-300 rounded mt-2 w-full sm:w-40">
+                 <button
+                   className="block px-4 py-2 w-full text-left hover:bg-gray-200"
+                   onClick={() => setFilter("cheap")}
+                 >
+                   Cheap
+                 </button>
+                 <button
+                   className="block px-4 py-2 w-full text-left hover:bg-gray-200"
+                   onClick={() => setFilter("expensive")}
+                 >
+                   Expensive
+                 </button>
+                 <button
+                   className="block px-4 py-2 w-full text-left hover:bg-gray-200"
+                   onClick={() => setFilter("popular")}
+                 >
+                   Popular
+                 </button>
+               </div>
+             )}
   </div>
 
 
